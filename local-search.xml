@@ -4,13 +4,19 @@
   
   
   <entry>
-    <title>Hello World</title>
-    <link href="/2022/09/04/hello-world/"/>
-    <url>/2022/09/04/hello-world/</url>
+    <title>一些常用的 Vim 操作</title>
+    <link href="/2022/09/04/vimOpt/"/>
+    <url>/2022/09/04/vimOpt/</url>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<h2 id="vim相关操作（简略版）"><a href="#vim相关操作（简略版）" class="headerlink" title="vim相关操作（简略版）"></a>vim相关操作（简略版）</h2><p><strong>备注：</strong></p><ol><li>编辑模式：vim进入文档以后，按下 insert 或者 i</li><li>命令模式：直接 vim 打开文件或者在编辑模式下按下ESC</li></ol><ul><li><p><strong>复制</strong></p><ul><li>单行复制<ul><li>在命令模式下，将光标移动到将要复制的行处，按“yy”进行复制</li></ul></li><li>多行复制<ul><li>在命令模式下，复制光标所在的向下n行，按“nyy”多行复制</li></ul></li></ul></li><li><p><strong>粘贴</strong></p><ul><li>直接复制，在命令模式下，按“p”粘贴</li></ul></li><li><p><strong>删除</strong></p><ul><li>单行删除<ul><li>在命令模式下，将光标移动到将要删除的行处，按“dd”进行删除</li></ul></li><li>部分字段删除<ul><li>在命令模式下，按下”dw”删除当前行光标之后的所有值</li></ul></li><li>多行删除<ul><li>在命令模式下，按下”ndd”,n为数字，删除当前光标之后的 n 行数据</li></ul></li></ul></li><li><p><strong>撤销</strong></p><ul><li>撤销<ul><li>在命令模式下，按下“u”,撤销上一步操作</li></ul></li><li>取消撤销<ul><li>在命令模式下，按“Ctrl+r”,取消上一步撤销操作</li></ul></li></ul></li><li><p><strong>查找</strong></p><ul><li>向后查找<ul><li>在命令模式下，按下”&#x2F;word”,word为需要查找的内容</li></ul></li><li>向前查找<ul><li>在命令模式下，按下”?word”,word为需要查找的内容</li></ul></li></ul></li><li><p><strong>显示行号</strong></p><ul><li>在命令模式下“:set number”即可显示行号</li></ul></li><li><p><strong>跳到指定行</strong></p><ul><li><p>跳到首行</p><ul><li>在命令模式下，按下gg</li></ul></li><li><p>跳到最后一行</p><ul><li>在命令模式下，按下shift+g</li></ul></li><li><p>跳到指定行</p><ul><li>在命令模式下，按下n+shift+g,n就是指定的行号</li></ul></li></ul></li></ul><blockquote><p>持续更新ing～</p></blockquote>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>工具使用</tag>
+      
+    </tags>
     
   </entry>
   
