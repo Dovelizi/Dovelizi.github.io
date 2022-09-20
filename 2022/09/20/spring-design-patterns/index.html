@@ -1,0 +1,776 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/chestnuts.png">
+  <link rel="icon" href="/img/chestnuts.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Lizi">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spring源码中的设计模式设计模式的七大原则   设计原则名称 定 义 使用频率    单一职责原则 (Single Responsibility Principle, SRP) 一个类只负责一个功能领域中的相应职责 ★★★★☆   开闭原则 (Open-Closed Principle, OCP) 软件实体应对扩展开放，而对修改关闭 ★★★★★   里氏代换原则 (Liskov Substit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring design patterns">
+<meta property="og:url" content="https://dovelizi.github.io/2022/09/20/spring-design-patterns/index.html">
+<meta property="og:site_name" content="Lizi">
+<meta property="og:description" content="Spring源码中的设计模式设计模式的七大原则   设计原则名称 定 义 使用频率    单一职责原则 (Single Responsibility Principle, SRP) 一个类只负责一个功能领域中的相应职责 ★★★★☆   开闭原则 (Open-Closed Principle, OCP) 软件实体应对扩展开放，而对修改关闭 ★★★★★   里氏代换原则 (Liskov Substit">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-20T08:10:30.000Z">
+<meta property="article:modified_time" content="2022-09-20T08:12:40.139Z">
+<meta property="article:author" content="Lizi">
+<meta property="article:tag" content="Source code">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>spring design patterns - Lizi</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dovelizi.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"81503a173f6faff8e1faf1fb1cad298c","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?81503a173f6faff8e1faf1fb1cad298c";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Lizi</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/self_bg.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="spring design patterns"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-20 16:10" pubdate>
+          2022年9月20日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          7.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          62 minutes
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> times
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">spring design patterns</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2022年9月20日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Spring源码中的设计模式"><a href="#Spring源码中的设计模式" class="headerlink" title="Spring源码中的设计模式"></a><strong>Spring源码中的设计模式</strong></h1><h3 id="设计模式的七大原则"><a href="#设计模式的七大原则" class="headerlink" title="设计模式的七大原则"></a><strong>设计模式的七大原则</strong></h3><table>
+<thead>
+<tr>
+<th>设计原则名称</th>
+<th>定 义</th>
+<th>使用频率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单一职责原则 (Single Responsibility Principle, SRP)</td>
+<td>一个类只负责一个功能领域中的相应职责</td>
+<td>★★★★☆</td>
+</tr>
+<tr>
+<td>开闭原则 (Open-Closed Principle, OCP)</td>
+<td>软件实体应对扩展开放，而对修改关闭</td>
+<td>★★★★★</td>
+</tr>
+<tr>
+<td>里氏代换原则 (Liskov Substitution Principle, LSP)</td>
+<td>所有引用基类对象的地方能够透明地使用其子类的对象</td>
+<td>★★★★★</td>
+</tr>
+<tr>
+<td>依赖倒转原则 (Dependence Inversion Principle, DIP)</td>
+<td>抽象不应该依赖于细节，细节应该依赖于抽象</td>
+<td>★★★★★</td>
+</tr>
+<tr>
+<td>接口隔离原则 (Interface Segregation Principle, ISP)</td>
+<td>使用多个专门的接口，而不使用单一的总接口</td>
+<td>★★☆☆☆</td>
+</tr>
+<tr>
+<td>合成复用原则 (Composite Reuse Principle, CRP)</td>
+<td>尽量使用对象组合，而不是继承来达到复用的目的</td>
+<td>★★★★☆</td>
+</tr>
+<tr>
+<td>迪米特法则 (Law of Demeter, LoD)</td>
+<td>一个软件实体应当尽可能少地与其他实体发生相互作用</td>
+<td>★★★☆☆</td>
+</tr>
+</tbody></table>
+<h3 id="设计模式的分类"><a href="#设计模式的分类" class="headerlink" title="设计模式的分类"></a><strong>设计模式的分类</strong></h3><p>![image-20220920160226506](&#x2F;Users&#x2F;lizijun&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20220920160226506.png)</p>
+<h3 id="Iterator模式"><a href="#Iterator模式" class="headerlink" title="Iterator模式"></a><strong>Iterator模式</strong></h3><p>​	Spring 框架还通过 CompositeIterator 类扩展迭代器模式。该模式主要用于 Java 语言的集合框架中，用于按顺序迭代访问元素</p>
+<h3 id="Adapter-模式"><a href="#Adapter-模式" class="headerlink" title="Adapter 模式"></a><strong>Adapter 模式</strong></h3><p>​	<strong>org.springframework.web.reactive#HandlerAdapter</strong><br>​	实现 Handler 的类有</p>
+<pre><code class="hljs">  HttpRequestHandlerAdapter (org.springframework.web.servlet.mvc)
+  SimpleServletHandlerAdapter (org.springframework.web.servlet.handler)
+  HandlerFunctionAdapter (org.springframework.web.servlet.function.support)
+  CompositeHandlerAdapter (org.springframework.boot.actuate.autoconfigure.web.servlet)
+  AbstractHandlerMethodAdapter (org.springframework.web.servlet.mvc.method)
+  SimpleControllerHandlerAdapter (org.springframework.web.servlet.mvc)
+</code></pre>
+<p>​	spring定义了一个适配器接口，使得每一种Controller有一种对应的适配器实现类，让适配器代替controller执行相应的方法。这样在扩展Controller 时，只需要增加一个适配器类就完成了SpringMVC的扩展了</p>
+<h3 id="Template-Method-模式"><a href="#Template-Method-模式" class="headerlink" title="Template Method 模式"></a><strong>Template Method 模式</strong></h3><p>​	org.springframework.context.support#AbstractApplicationContext.refresh()<br>​	refresh方法中定义了一套流程，其中postProcessBeanFactory、onRefresh以及一些其他方法中调用的方法，都是延迟到子类中实现，在AbstractApplicationContext类中只是定义了一个空实现，这就是模板方法模式中的钩子方法<br>​	Spring 中模版方法具体的实现：<br>![image-20220920160155167](&#x2F;Users&#x2F;lizijun&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20220920160155167.png)</p>
+<h3 id="Singleton-模式"><a href="#Singleton-模式" class="headerlink" title="Singleton 模式"></a><strong>Singleton 模式</strong></h3><p>​	<strong>org.springframework.beans.factory.support#AbstractBeanFactory.getBean()</strong><br>​	Spring的依赖注入（包括lazy-init方式）都是发生在AbstractBeanFactory 的 getBean里。getBean 的 doGetBean方法调用 getSingleton 进行 bean 的创建。lazy-init 方式，在容器初始化时候进行调用，非lazy-init方式，在用户向容器第一次索要bean时进行调用，其中 getSingleton 就是使用双重检索来实现单例 Bean 的创建</p>
+<h3 id="Prototype模式"><a href="#Prototype模式" class="headerlink" title="**Prototype模式   **"></a>**Prototype模式   **</h3><p>​	**org.springframework.beans.factory.support#AbstractAutowireCapableBeanFactory.doCreateBean() **<br>​    	在创建 Bean 是会校验是否是原型模式，然后通过对象拷贝的方式创建原型对象<br>​	<strong>org.springframework.beans.factory.support#RootBeanDefinition.RootBeanDefinition</strong><br>​		在创建 BeanDefintion 对象时直接通过 RootBeanDefinition 构造方法设置各种属性和值创建对象</p>
+<h3 id="Builder模式"><a href="#Builder模式" class="headerlink" title="Builder模式"></a><strong>Builder模式</strong></h3><p>​	<strong>org.springframework.web.util#UriComponents</strong><br>​	处理 URL 将其处理以后封装为 UriComponents 返回<br>​	***(扩展：JDK 中 StringBuilder 中 实现了 Append 方法也是 Builder 模式的一种实现)**</p>
+<h3 id="Abstract-Factory-模式"><a href="#Abstract-Factory-模式" class="headerlink" title="Abstract Factory 模式"></a><strong>Abstract Factory 模式</strong></h3><p>​	<strong>org.springframework.beans.factory#BeanFactory</strong><br>​	在 Spring 中，BeanFactory 是用于管理 Bean 的一个工厂，所有工厂都是 BeanFactory 的子类。这样我们可以通过 IOC 容器来管理访问 Bean，根据不同的策略调用 getBean() 方法，从而获得具体对象<br>​	BeanFactory 的子类主要有：</p>
+<pre><code class="hljs">   ClassPathXmlApplicationContext
+   XmlWebApplicationContext
+   StaticWebApplicationContext
+   StaticApplicationContext
+</code></pre>
+<p>在 Spring 中，DefaultListableBeanFactory 实现了所有工厂的公共逻辑</p>
+<hr>
+<h3 id="Bridge-模式"><a href="#Bridge-模式" class="headerlink" title="Bridge 模式"></a><strong>Bridge 模式</strong></h3><p>​	<strong>org.springframework.core#BridgeMethodResolver</strong><br>​	这个桥接解析器的作用是通过桥接方法，找到桥接方法对应的原始方法。当一个子类在继承（或实现）一个父类（或接口）的泛型方法时，在子类中明确指定了泛型类型，那么在编译时编译器会自动生成桥接方法。BridgeMethodResolve 就是通过判断方法名、参数的个数以及泛型类型参数来获取原始的方法。具体实现：</p>
+<ol>
+<li>如果不是桥接，就直接返回</li>
+<li>先从本地缓存独取，缓存中有则直接返回</li>
+<li>以方法名称和入参格式相等进行筛选</li>
+<li>递归该类及其父类所有的方法，符合条件就添加进来</li>
+<li>如果符合条件就直接采用，否则，调用searchCandidates方法再次筛选。</li>
+<li>如果找不到实际方法，则返回原来的桥连方法。</li>
+<li>结果放入缓存。</li>
+</ol>
+<h3 id="Strategy-模式"><a href="#Strategy-模式" class="headerlink" title="Strategy 模式"></a><strong>Strategy 模式</strong></h3><p>​	<strong>org.springframework.beans.factory.support#InstantiationStrategy</strong><br>​	创建 bean 实例是有三种策略：</p>
+<pre><code class="hljs">   基于无参构造函数创建 bean 实例
+   基于指定构造函数创建 bean 实例
+   基于工厂方法创建 bean 实例
+</code></pre>
+<p>​	<strong>org.springframework.beans.factory.support#BeanDefinitionReader</strong><br>​	读取 Bean 相关定义的类</p>
+<pre><code class="hljs">   Groovy BeanDefinitionReader
+   PropertiesBeanDefinitionReader
+   XmlBeanDefinitionReader
+   ConfigurationClassBeanDefinitionReader
+</code></pre>
+<p>​	通过不同的策略从不同的文件源读取 BeanDefinition<br>​	定义 BeanName 的接口<br>​	<strong>org.springframework.beans.factory.support#BeanNameGenerator</strong></p>
+<pre><code class="hljs">   DefaultBeanNameGenerator
+   AnnotationBeanNameGenerator
+</code></pre>
+<p>​	通过不同的方式生成对应 Bean 的名字<br>​	获取资源的接口<br>​	<strong>org.springframework.core.io#ResourceLoader</strong></p>
+<pre><code class="hljs">   ClassRelativeResourceLoader
+   DefaultResourceLoader
+   FileSystemResourceLoader
+   ResourcePatternResolver
+</code></pre>
+<p>通过不同的方式获取资源</p>
+<h3 id="Composite-模式"><a href="#Composite-模式" class="headerlink" title="Composite 模式"></a><strong>Composite 模式</strong></h3><p>​	<strong>org.springframework.cache.support.CompositeCacheManager</strong><br>​	组合缓存管理器 CompositeCacheManager：<br>​	CompositeCacheManager 自己实现了 CacheManager，并将多个 CacheManager 组合到成员变量中，一般用于对多个缓存进行合并，按照同一个缓存方式进行处理</p>
+<h3 id="Decorator-模式"><a href="#Decorator-模式" class="headerlink" title="Decorator 模式"></a><strong>Decorator 模式</strong></h3><p>​	<strong>org.springframework.cache.transaction#TransactionAwareCacheDecorator</strong><br>​	TransactionAwareCacheDecorator 类相当于装饰器模式中的抽象装饰角色，主要用来处理事务缓存<br>Spring 的 ApplicationContext 中配置所有的 DataSource。这些 DataSource 可能是各种不同类型的， 比如不同的数据库：Oracle、 SQL Server、 MySQL 等， 也可能是不同的数据源。然后 SessionFactory 根据客户的每次请求， 将 DataSource 属性设置成不同的数据源， 以到达切换数据源的目的。<br>在 spring 的命名体现：Spring 中用到的包装器模式在类名上有两种表现：一种是类名中含有 Wrapper， 另一种是类名中含有Decorator。基本上都是动态地给一个对象添加一些额外的职责，比如</p>
+<ul>
+<li>org.springframework.cache.transaction 包下的 TransactionAwareCacheDecorator 类</li>
+<li>org.springframework.session.web.http 包下的 SessionRepositoryFilter 内部类 SessionRepositoryRequestWrapper</li>
+</ul>
+<h3 id="Visitor模式"><a href="#Visitor模式" class="headerlink" title="Visitor模式"></a><strong>Visitor模式</strong></h3><p>​	<strong>org.springframework.beans.factory.config#BeanDefinitionVisitor</strong><br>​	BeanDefinition 为 Spring Bean 的定义信息，在 Spring 解析完配置后，会生成 BeanDefinition 并且记录下来。下次通过 getBean 获取 Bean 的时候，会通过  BeanDefinition 来实例化具体的 Bean 对象。<br>​	Spring 的 BeanDefinitionVisitor 用来访问 BeanDefinition。<br>​	抽象元素为 BeanDefinition。对 Bean 的定义信息，比如属性值、构造方法参数或者更具体的实现。<br>​	具体元素有 RootBeanDefinition、ChildBeanDefinition、GenericBeanDefinition 等等。<br>​	因为没有对访问者进行扩展，所以只有一个具体访问者 BeanDefinitionVisitor<br>​	访问的具体调用就是visitor.visitBeanDefinition(bd);</p>
+<h3 id="Chain-of-Responsibility-模式"><a href="#Chain-of-Responsibility-模式" class="headerlink" title="Chain of.Responsibility 模式"></a><strong>Chain of.Responsibility 模式</strong></h3><p>​	<strong>org.springframework.web.servlet#HandlerInterceptor</strong><br>​	HandlerInterceptor接口在web开发中非常常用，里面有preHandle()、postHandle()、afterCompletion()三个方法，实现这三个方法可以分别在调用”Controller”方法之前，调用”Controller”方法之后渲染”ModelAndView”之前，以及渲染”ModelAndView”之后执行。<br>​	<strong>org.springframework.aop.framework#JdkDynamicAopProxy</strong><br>​	首先获取目标方法所有的拦截器然后在没有拦截器则直接反射调用目标方法，再生成动态代理的责任链，最后根据生成的责任链去执行对应的流程</p>
+<h3 id="Facade-模式"><a href="#Facade-模式" class="headerlink" title="Facade 模式"></a><strong>Facade 模式</strong></h3><p>​	<strong>org.springframework.core.io#ResourceLoader</strong><br>​	在spring容器中该接口提供了一个统一接口用于访问各种资源（如：文件、流、网络url资源等等)，相当于Facade的一个资源访问子系统</p>
+<h3 id="Mediator-模式"><a href="#Mediator-模式" class="headerlink" title="Mediator 模式"></a><strong>Mediator 模式</strong></h3><p>​	<strong>java.util.Timer#schedule</strong><br>​	所有的task都放入了Timer类中维护的task队列中。所以Timer就是充当了一个中介者的角色，而task队列内的任务就是具体同事对象。<br>SpringMVC 中 control 层就相当于中介去管理 View And Modle 层</p>
+<h3 id="Observer模式"><a href="#Observer模式" class="headerlink" title="Observer模式"></a><strong>Observer模式</strong></h3><ol>
+<li>事件：ApplicationEvent 是所有事件对象的父类。ApplicationEvent 继承自 jdk 的 EventObject, 所有的事件都需要继承 ApplicationEvent, 并且通过 source 得到事件源。Spring 也为我们提供了很多内置事件，ContextRefreshedEvent、ContextStartedEvent、ContextStoppedEvent、ContextClosedEvent、RequestHandledEvent。</li>
+<li>事件监听：ApplicationListener，也就是观察者，继承自 jdk 的 EventListener，该类中只有一个方法 onApplicationEvent。当监听的事件发生后该方法会被执行。</li>
+<li>事件源：ApplicationContext，ApplicationContext 是 Spring 中的核心容器，在事件监听中 ApplicationContext 可以作为事件的发布者，也就是事件源。因为 ApplicationContext 继承自 ApplicationEventPublisher。在 ApplicationEventPublisher 中定义了事件发布的方法：publishEvent(Object event)</li>
+<li>事件管理：ApplicationEventMulticaster，用于事件监听器的注册和事件的广播。监听器的注册就是通过它来实现的，它的作用是把 Applicationcontext 发布的 Event 广播给它的监听器列表。</li>
+</ol>
+<p>广播上下文事件，由监听器进行监听处理<br>![image-20220920160303973](&#x2F;Users&#x2F;lizijun&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20220920160303973.png)</p>
+<h3 id="Memento-模式"><a href="#Memento-模式" class="headerlink" title="Memento 模式"></a><strong>Memento 模式</strong></h3><p>​	备忘录模式在框架源码中的应用是比较少的，主要还是结合具体的应用场景来使用。 在Spring的Webflow源码中找到一个StateManageableMessageContext接口，我们看到有一个 createMessagesMemento(）方法,创建一个消息备忘录</p>
+<h3 id="State-模式"><a href="#State-模式" class="headerlink" title="State 模式"></a><strong>State 模式</strong></h3><p>​	Spring中的提供一个组件名称就叫作状态机（StateMachine），状态机帮助开发者简化状态控制的开发过程，让状态机结构更加层次化。</p>
+<h3 id="Flyweight-Pattern-模式"><a href="#Flyweight-Pattern-模式" class="headerlink" title="Flyweight Pattern 模式"></a><strong>Flyweight Pattern 模式</strong></h3><p>​	享元模式，JDK 中对象池的运用（String，Integer，Long….）<br>​	Spring Bean工厂中存储 Bean 对象的集合<br>​	数据连接池（Data Source Pool）</p>
+<h3 id="Proxy-模式"><a href="#Proxy-模式" class="headerlink" title="Proxy 模式"></a><strong>Proxy 模式</strong></h3><p>![image-20220920160324400](&#x2F;Users&#x2F;lizijun&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20220920160324400.png)</p>
+<h3 id="Command-模式"><a href="#Command-模式" class="headerlink" title="Command 模式"></a><strong>Command 模式</strong></h3><p><strong>org.springframework.jdbc.core#JdbcTemplate</strong></p>
+<ul>
+<li>StatementCallback 接口 ,类似命令接口(Command)</li>
+<li>class QueryStatementCallback implements StatementCallback<T>, SqlProvider , 匿名内部类， 实现了命令接口， 同时也充当命令接收者</li>
+<li>命令调用者 是 JdbcTemplate , 其中 execute(StatementCallback<T> action) 方法中，调用 action.doInStatement 方法. 不同的 实现 StatementCallback 接口的对象，对应不同的 doInStatemnt  实现逻辑</li>
+<li>另外实现  StatementCallback 命令接口的子类还有 QueryStatementCallback</li>
+</ul>
+<h3 id="Interpreter-模式"><a href="#Interpreter-模式" class="headerlink" title="Interpreter 模式"></a><strong>Interpreter 模式</strong></h3><p>org.springframework.expression#ExpressionParser<br>在 Spring 中，ExpressionParser 接口内部采用的也是解释器模式，它封装了字符串表达式的语法</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26933281/">《图解设计模式》</a><br>[Spring 中的设计模式](</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Source-code/">#Source code</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>spring design patterns</div>
+      <div>https://dovelizi.github.io/2022/09/20/spring-design-patterns/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lizi</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月20日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2022年9月20日</div>
+        </div>
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/05/commit-emoji/" title="git commit emoji">
+                        <span class="hidden-mobile">git commit emoji</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>哈哈哈，抓到你了～</span> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
