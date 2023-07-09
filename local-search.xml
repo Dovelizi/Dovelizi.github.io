@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>Some Articles</title>
+    <link href="/2023/07/09/Some-Articles/"/>
+    <url>/2023/07/09/Some-Articles/</url>
+    
+    <content type="html"><![CDATA[<h2 id="文章归档"><a href="#文章归档" class="headerlink" title="文章归档"></a>文章归档</h2><blockquote><p>分享一个很好用的文档工具，功能真的超级齐全。样式也很奈斯！</p></blockquote><p><a href="https://z3xytxj021.feishu.cn/drive/folder/fldcnaTYOpODaJTdJ0b6OTG2jTd">我的主页</a>后续的一些文章的更新以及分享也会直接在飞书文档中更新</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Sum up</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>CompletableFuture</title>
     <link href="/2023/07/09/CompletableFuture/"/>
     <url>/2023/07/09/CompletableFuture/</url>
