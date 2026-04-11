@@ -15,6 +15,8 @@
           
           <category> AI &amp; 大模型 </category>
           
+          <category> 概念解析 </category>
+          
       </categories>
       
       
@@ -25,6 +27,10 @@
             <tag> LLM </tag>
             
             <tag> Token </tag>
+            
+            <tag> BPE </tag>
+            
+            <tag> Tokenizer </tag>
             
         </tags>
       
@@ -44,6 +50,8 @@
           
           <category> AI &amp; 大模型 </category>
           
+          <category> AI 工具实战 </category>
+          
       </categories>
       
       
@@ -51,11 +59,15 @@
             
             <tag> AI </tag>
             
-            <tag> Claude Code </tag>
-            
             <tag> Agent </tag>
             
+            <tag> Claude Code </tag>
+            
             <tag> MCP </tag>
+            
+            <tag> 开发工具 </tag>
+            
+            <tag> Skill </tag>
             
         </tags>
       
@@ -75,6 +87,8 @@
           
           <category> AI &amp; 大模型 </category>
           
+          <category> 概念解析 </category>
+          
       </categories>
       
       
@@ -87,6 +101,10 @@
             <tag> MCP </tag>
             
             <tag> LLM </tag>
+            
+            <tag> Token </tag>
+            
+            <tag> Prompt </tag>
             
         </tags>
       
@@ -106,12 +124,22 @@
           
           <category> AI &amp; 大模型 </category>
           
+          <category> 设计模式 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> AI </tag>
+            
+            <tag> Prompt Engineering </tag>
+            
+            <tag> Agent </tag>
+            
+            <tag> 设计模式 </tag>
+            
+            <tag> RAG </tag>
             
         </tags>
       
@@ -129,14 +157,18 @@
       
       <categories>
           
-          <category> 杂谈 </category>
+          <category> 资源与收藏 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> Sum up </tag>
+            <tag> 收藏 </tag>
+            
+            <tag> 资源分享 </tag>
+            
+            <tag> 飞书 </tag>
             
         </tags>
       
@@ -156,12 +188,20 @@
           
           <category> Java 后端 </category>
           
+          <category> 并发与多线程 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> Java </tag>
+            
+            <tag> 并发编程 </tag>
+            
+            <tag> CompletableFuture </tag>
+            
+            <tag> 异步 </tag>
             
         </tags>
       
@@ -181,12 +221,20 @@
           
           <category> Java 后端 </category>
           
+          <category> Spring 生态 </category>
+          
       </categories>
       
       
         <tags>
             
-            <tag> design patterns </tag>
+            <tag> 设计模式 </tag>
+            
+            <tag> Java </tag>
+            
+            <tag> Spring </tag>
+            
+            <tag> 源码分析 </tag>
             
         </tags>
       
@@ -206,12 +254,20 @@
           
           <category> 工具与效率 </category>
           
+          <category> Git </category>
+          
       </categories>
       
       
         <tags>
             
+            <tag> Git </tag>
+            
             <tag> 工具使用 </tag>
+            
+            <tag> 团队协作 </tag>
+            
+            <tag> 规范 </tag>
             
         </tags>
       
@@ -231,12 +287,20 @@
           
           <category> 工具与效率 </category>
           
+          <category> 编辑器 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> 工具使用 </tag>
+            
+            <tag> Vim </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> 效率 </tag>
             
         </tags>
       
