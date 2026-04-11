@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>AI 设计模式完全指南</title>
+      <link href="/2026/04/11/AI-Design-Patterns-Guide/"/>
+      <url>/2026/04/11/AI-Design-Patterns-Guide/</url>
+      
+        <content type="html"><![CDATA[<h1 id="AI-设计模式完全指南"><a href="#AI-设计模式完全指南" class="headerlink" title="AI 设计模式完全指南"></a>AI 设计模式完全指南</h1><blockquote><p>用最简单的语言，讲清楚 AI 领域最核心的设计模式。每个模式都回答三个问题：是什么？什么时候用？怎么理解？</p></blockquote><h2 id="一、Prompt-设计模式"><a href="#一、Prompt-设计模式" class="headerlink" title="一、Prompt 设计模式"></a>一、Prompt 设计模式</h2><h3 id="1-Chain-of-Thought-CoT"><a href="#1-Chain-of-Thought-CoT" class="headerlink" title="1. Chain of Thought (CoT)"></a>1. Chain of Thought (CoT)</h3><p><strong>是什么：</strong> 让 LLM “一步一步思考”，而不是直接给答案。通过在 prompt 中引导模型展示推理过程，提升复杂任务的准确性。</p><p><strong>什么时候用：</strong> 数学推理、逻辑分析、多步决策等需要推理链的场景。</p><h3 id="2-Few-Shot-Prompting"><a href="#2-Few-Shot-Prompting" class="headerlink" title="2. Few-Shot Prompting"></a>2. Few-Shot Prompting</h3><p><strong>是什么：</strong> 在 prompt 中提供几个示例（输入→输出对），让模型通过类比学习来处理新任务。</p><p><strong>什么时候用：</strong> 格式化输出、分类任务、风格迁移等需要明确输出模式的场景。</p><h3 id="3-Prompt-Chaining"><a href="#3-Prompt-Chaining" class="headerlink" title="3. Prompt Chaining"></a>3. Prompt Chaining</h3><p><strong>是什么：</strong> 将一个复杂任务拆分成多个子 prompt，前一个的输出作为后一个的输入，形成流水线。</p><p><strong>什么时候用：</strong> 复杂文档处理、多阶段生成、需要中间校验的工作流。</p><h2 id="二、Agent-设计模式"><a href="#二、Agent-设计模式" class="headerlink" title="二、Agent 设计模式"></a>二、Agent 设计模式</h2><h3 id="4-ReAct-Reasoning-Acting"><a href="#4-ReAct-Reasoning-Acting" class="headerlink" title="4. ReAct (Reasoning + Acting)"></a>4. ReAct (Reasoning + Acting)</h3><p><strong>是什么：</strong> 让 Agent 交替进行”推理”和”行动”。先思考下一步该做什么，再执行动作，观察结果后继续推理。</p><p><strong>什么时候用：</strong> 需要与外部环境交互的复杂任务，如搜索、数据查询、多步骤问题解决。</p><h3 id="5-Tool-Use"><a href="#5-Tool-Use" class="headerlink" title="5. Tool Use"></a>5. Tool Use</h3><p><strong>是什么：</strong> 赋予 LLM 调用外部工具（API、计算器、数据库等）的能力，扩展其能力边界。</p><p><strong>什么时候用：</strong> LLM 自身能力不足的场景——实时数据获取、精确计算、代码执行等。</p><h3 id="6-Router-Pattern"><a href="#6-Router-Pattern" class="headerlink" title="6. Router Pattern"></a>6. Router Pattern</h3><p><strong>是什么：</strong> 用一个”路由器”模块分析用户意图，将请求分发给最合适的专用模型或处理链路。</p><p><strong>什么时候用：</strong> 多功能系统、需要根据输入类型选择不同处理策略的场景。</p><h3 id="7-Multi-Agent"><a href="#7-Multi-Agent" class="headerlink" title="7. Multi-Agent"></a>7. Multi-Agent</h3><p><strong>是什么：</strong> 多个 AI Agent 协同工作，每个 Agent 有不同的角色和专长，通过消息传递协作完成任务。</p><p><strong>什么时候用：</strong> 复杂项目（如软件开发、研究报告撰写）、需要多角度审视的任务。</p><h2 id="三、LLM-应用架构模式"><a href="#三、LLM-应用架构模式" class="headerlink" title="三、LLM 应用架构模式"></a>三、LLM 应用架构模式</h2><h3 id="8-RAG-Retrieval-Augmented-Generation"><a href="#8-RAG-Retrieval-Augmented-Generation" class="headerlink" title="8. RAG (Retrieval-Augmented Generation)"></a>8. RAG (Retrieval-Augmented Generation)</h3><p><strong>是什么：</strong> 先从知识库中检索相关文档，再将检索结果作为上下文输入给 LLM 生成回答。</p><p><strong>什么时候用：</strong> 企业知识问答、基于私有数据的对话、需要减少幻觉的场景。</p><h3 id="9-MCP-Model-Context-Protocol"><a href="#9-MCP-Model-Context-Protocol" class="headerlink" title="9. MCP (Model Context Protocol)"></a>9. MCP (Model Context Protocol)</h3><p><strong>是什么：</strong> 标准化协议，让 AI 应用以统一方式连接各种数据源和工具，类似 AI 世界的”USB 接口”。</p><p><strong>什么时候用：</strong> 需要 AI 连接多个外部系统、构建可插拔工具生态的场景。</p><h3 id="10-Agentic-RAG"><a href="#10-Agentic-RAG" class="headerlink" title="10. Agentic RAG"></a>10. Agentic RAG</h3><p><strong>是什么：</strong> 在 RAG 基础上加入 Agent 能力，让系统能自主决定何时检索、检索什么、是否需要多轮检索。</p><p><strong>什么时候用：</strong> 复杂知识问答、需要跨多个知识源综合推理的场景。</p><h2 id="四、AI-交互设计模式"><a href="#四、AI-交互设计模式" class="headerlink" title="四、AI 交互设计模式"></a>四、AI 交互设计模式</h2><h3 id="11-Human-in-the-Loop"><a href="#11-Human-in-the-Loop" class="headerlink" title="11. Human-in-the-Loop"></a>11. Human-in-the-Loop</h3><p><strong>是什么：</strong> 在 AI 自动化流程中设置人工审核&#x2F;确认节点，确保关键决策有人把关。</p><p><strong>什么时候用：</strong> 高风险决策、内容发布、代码部署等需要人工确认的环节。</p><h3 id="12-Guardrails"><a href="#12-Guardrails" class="headerlink" title="12. Guardrails"></a>12. Guardrails</h3><p><strong>是什么：</strong> 为 AI 系统设置输入输出的安全边界和规则约束，防止产生有害或不符合预期的内容。</p><p><strong>什么时候用：</strong> 面向用户的 AI 产品、需要合规控制的企业应用。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> AI </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Some Articles</title>
+      <link href="/2023/07/09/Some-Articles/"/>
+      <url>/2023/07/09/Some-Articles/</url>
+      
+        <content type="html"><![CDATA[<h2 id="文章归档"><a href="#文章归档" class="headerlink" title="文章归档"></a>文章归档</h2><blockquote><p>分享一个很好用的文档工具，功能真的超级齐全。样式也很奈斯！</p></blockquote><p><a href="https://z3xytxj021.feishu.cn/drive/folder/fldcnaTYOpODaJTdJ0b6OTG2jTd">我的主页</a>后续的一些文章的更新以及分享也会直接在飞书文档中更新</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Sum up </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CompletableFuture</title>
+      <link href="/2023/07/09/CompletableFuture/"/>
+      <url>/2023/07/09/CompletableFuture/</url>
+      
+        <content type="html"><![CDATA[<h1 id="CompletableFuture-用法详解解"><a href="#CompletableFuture-用法详解解" class="headerlink" title="CompletableFuture 用法详解解"></a>CompletableFuture 用法详解解</h1><h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><blockquote><p>Java 文档说明，创建线程的方式只有两种：继承 Thread 或者实现 Runnable 接口，具体源码说明如下</p></blockquote><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 继承 Thread 类</span></span><br><span class="line"> <span class="keyword">class</span> <span class="title class_">PrimeThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">          <span class="type">long</span> minPrime;</span><br><span class="line">          PrimeThread(<span class="type">long</span> minPrime) &#123;</span><br><span class="line">              <span class="built_in">this</span>.minPrime = minPrime;</span><br><span class="line">          &#125;</span><br><span class="line"> </span><br><span class="line">          <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">              <span class="comment">// compute primes larger than minPrime</span></span><br><span class="line">               . . .</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"> <span class="comment">// The following code would then create a thread and start it running:</span></span><br><span class="line">  <span class="type">PrimeThread</span> <span class="variable">p</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PrimeThread</span>(<span class="number">143</span>);</span><br><span class="line">  p.start();</span><br><span class="line">      </span><br><span class="line"> <span class="comment">// 实现 Runnable 接口</span></span><br><span class="line">  <span class="keyword">class</span> <span class="title class_">PrimeRun</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">          <span class="type">long</span> minPrime;</span><br><span class="line">          PrimeRun(<span class="type">long</span> minPrime) &#123;</span><br><span class="line">              <span class="built_in">this</span>.minPrime = minPrime;</span><br><span class="line">          &#125;</span><br><span class="line"> </span><br><span class="line">          <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">              <span class="comment">// compute primes larger than minPrime</span></span><br><span class="line">               . . .</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"> <span class="comment">// The following code would then create a thread and start it running:</span></span><br><span class="line"><span class="type">PrimeRun</span> <span class="variable">p</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PrimeRun</span>(<span class="number">143</span>);</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(p).start();</span><br></pre></td></tr></table></figure><blockquote><p>由上述代码可以在对应线程执行 run 方法以后返回值为 void<br>为了满足需要返回值的场景，Java 1.5 以后的 Callable 和 Future 接口<br>但是 Future 获取返回值时阻塞当前线程，在一些复杂的场景下 Future 和 FutureTask 无法满足需求。所以在 Future 基础之上设计出了 CompletableFuture</p></blockquote><h2 id="CompletableFuture-方法使用流程图"><a href="#CompletableFuture-方法使用流程图" class="headerlink" title="CompletableFuture 方法使用流程图"></a>CompletableFuture 方法使用流程图</h2><p>关于 CompletableFuture 的文档描述 <a href="https://z3xytxj021.feishu.cn/docx/KhdNd2kBboCdDhxdAK8czzqwnwc">具体文档描述</a></p><h2 id="组合式异步编程"><a href="#组合式异步编程" class="headerlink" title="组合式异步编程"></a>组合式异步编程</h2><blockquote><p>将两个异步计算合并为一个，这两个异步计算之间相互独立，同时第二个又依赖于第一个的结果，Future 无法做到</p></blockquote><p>Example:</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">CompletableFuture&lt;List&lt;String&gt;&gt; painting = CompletableFuture.supplyAsync(() -&gt; &#123;</span><br><span class="line">    <span class="comment">// 第一个任务获取美术课需要带的东西，返回一个 list</span></span><br><span class="line">    List&lt;String&gt; stuff = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    stuff.add(<span class="string">&quot;画笔&quot;</span>);</span><br><span class="line">    stuff.add(<span class="string">&quot;颜料&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> stuff;</span><br><span class="line">&#125;);</span><br><span class="line">CompletableFuture&lt;List&lt;String&gt;&gt; handWork = CompletableFuture.supplyAsync(() -&gt; &#123;</span><br><span class="line">    <span class="comment">// 第二个任务获取劳技课需要带的东西，返回一个 list</span></span><br><span class="line">    List&lt;String&gt; stuff = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    stuff.add(<span class="string">&quot;剪刀&quot;</span>);</span><br><span class="line">    stuff.add(<span class="string">&quot;折纸&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> stuff;</span><br><span class="line">&#125;);</span><br><span class="line">CompletableFuture&lt;List&lt;String&gt;&gt; total = painting</span><br><span class="line">        <span class="comment">// 传入 handWork 列表，然后得到两个 CompletableFuture 的参数 Stuff1和2</span></span><br><span class="line">        .thenCombine(handWork, (stuff1, stuff2) -&gt; &#123;</span><br><span class="line">            <span class="comment">// 合并成新的 list</span></span><br><span class="line">            <span class="keyword">return</span> Stream.of(stuff1, stuff2)</span><br><span class="line">                         .flatMap(Collection::stream)</span><br><span class="line">                         .collect(Collectors.toList());</span><br><span class="line">        &#125;);</span><br><span class="line">System.out.println(total.join());</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>spring design patterns</title>
+      <link href="/2022/09/20/spring-design-patterns/"/>
+      <url>/2022/09/20/spring-design-patterns/</url>
+      
+        <content type="html"><![CDATA[<p>Spring源码中的设计模式设计模式的七大原则设计原则名称定 义使用频率单一职责原则 (Single Responsibility Principle, SRP)一个类只负责一个功能领域中的相应职责★★★★☆开闭原则 (Open-Closed Principle, OCP)软件实体应对扩展开放，而对修改关闭★★★★★里氏代换原则 (Liskov Substitution Principle, LS</p><blockquote><p>完整内容请参考原始 HTML 文件</p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> design patterns </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>git commit emoji</title>
+      <link href="/2022/09/05/commit-emoji/"/>
+      <url>/2022/09/05/commit-emoji/</url>
+      
+        <content type="html"><![CDATA[<h1 id="git-commit-emoji-使用指南"><a href="#git-commit-emoji-使用指南" class="headerlink" title="git commit emoji 使用指南"></a>git commit emoji 使用指南</h1><p>执行 <code>git commit</code> 时使用 emoji 为本次提交打上一个 “标签”, 使得此次 commit 的主要工作得以凸现，也能够使得其在整个提交历史中易于区分与查找。</p><h3 id="commit-格式"><a href="#commit-格式" class="headerlink" title="commit 格式"></a>commit 格式</h3><p><code>git commit</code> 时，提交信息遵循以下格式：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">:emoji1: :emoji2: 不超过 50 个字的摘要，首字母大写，使用祈使语气，句末不要加句号</span><br><span class="line"></span><br><span class="line">提交信息主体</span><br><span class="line"></span><br><span class="line">引用相关 issue 或 PR 编号 &lt;#110&gt;</span><br></pre></td></tr></table></figure><p>初次提交示例：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;:tada: Initialize Repo&quot;</span></span><br></pre></td></tr></table></figure><h3 id="emoji-指南"><a href="#emoji-指南" class="headerlink" title="emoji 指南"></a>emoji 指南</h3><table><thead><tr><th align="left">emoji</th><th align="left">emoji 代码</th><th align="left">commit 说明</th></tr></thead><tbody><tr><td align="left">:tada: (庆祝)</td><td align="left"><code>:tada:</code></td><td align="left">初次提交</td></tr><tr><td align="left">:new: (全新)</td><td align="left"><code>:new:</code></td><td align="left">引入新功能</td></tr><tr><td align="left">:bug: (bug)</td><td align="left"><code>:bug:</code></td><td align="left">修复 bug</td></tr><tr><td align="left">:ambulance: (急救车)</td><td align="left"><code>:ambulance:</code></td><td align="left">重要补丁</td></tr><tr><td align="left">:lipstick: (口红)</td><td align="left"><code>:lipstick:</code></td><td align="left">更新 UI 和样式文件</td></tr><tr><td align="left">:wrench: (扳手)</td><td align="left"><code>:wrench:</code></td><td align="left">修改配置文件</td></tr><tr><td align="left">:heavy_plus_sign: (加号)</td><td align="left"><code>:heavy_plus_sign:</code></td><td align="left">增加一个依赖</td></tr><tr><td align="left">:arrow_up: (上升箭头)</td><td align="left"><code>:arrow_up:</code></td><td align="left">升级依赖</td></tr><tr><td align="left">:zap: (闪电)</td><td align="left"><code>:zap:</code></td><td align="left">提升性能</td></tr><tr><td align="left">:rocket: (火箭)</td><td align="left"><code>:rocket:</code></td><td align="left">部署功能</td></tr><tr><td align="left">:memo: (备忘录)</td><td align="left"><code>:memo:</code></td><td align="left">撰写文档</td></tr><tr><td align="left">:hammer: (锤子)</td><td align="left"><code>:hammer:</code></td><td align="left">重大重构</td></tr><tr><td align="left">:art: (调色板)</td><td align="left"><code>:art:</code></td><td align="left">改进代码结构&#x2F;代码格式</td></tr><tr><td align="left">:fire: (火焰)</td><td align="left"><code>:fire:</code></td><td align="left">移除代码或文件</td></tr><tr><td align="left">:construction: (施工)</td><td align="left"><code>:construction:</code></td><td align="left">工作进行中</td></tr><tr><td align="left">:lock: (锁)</td><td align="left"><code>:lock:</code></td><td align="left">修复安全问题</td></tr><tr><td align="left">:whale: (鲸鱼)</td><td align="left"><code>:whale:</code></td><td align="left">Docker 相关工作</td></tr></tbody></table><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul><li><a href="https://github.com/carloscuesta/gitmoji/">gitmoji</a></li><li><a href="https://gitmoji.carloscuesta.me/">An emoji guide for your commit messages</a></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 工具使用 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>一些常用的 Vim 操作</title>
+      <link href="/2022/09/04/vim-operation/"/>
+      <url>/2022/09/04/vim-operation/</url>
+      
+        <content type="html"><![CDATA[<h2 id="vim相关操作（简略版）"><a href="#vim相关操作（简略版）" class="headerlink" title="vim相关操作（简略版）"></a>vim相关操作（简略版）</h2><p><strong>备注：</strong></p><ol><li>编辑模式：vim进入文档以后，按下 insert 或者 i</li><li>命令模式：直接 vim 打开文件或者在编辑模式下按下ESC</li></ol><ul><li><p><strong>复制</strong></p><ul><li>单行复制：在命令模式下，将光标移动到将要复制的行处，按”yy”进行复制</li><li>多行复制：在命令模式下，复制光标所在的向下n行，按”nyy”多行复制</li></ul></li><li><p><strong>粘贴</strong></p><ul><li>直接复制，在命令模式下，按”p”粘贴</li></ul></li><li><p><strong>删除</strong></p><ul><li>单行删除：在命令模式下，将光标移动到将要删除的行处，按”dd”进行删除</li><li>部分字段删除：在命令模式下，按下”dw”删除当前行光标之后的所有值</li><li>多行删除：在命令模式下，按下”ndd”,n为数字，删除当前光标之后的 n 行数据</li></ul></li><li><p><strong>撤销</strong></p><ul><li>撤销：在命令模式下，按下”u”,撤销上一步操作</li><li>取消撤销：在命令模式下，按”Ctrl+r”,取消上一步撤销操作</li></ul></li><li><p><strong>查找</strong></p><ul><li>向后查找：在命令模式下，按下”&#x2F;word”,word为需要查找的内容</li><li>向前查找：在命令模式下，按下”?word”,word为需要查找的内容</li></ul></li><li><p><strong>显示行号</strong></p><ul><li>在命令模式下”:set number”即可显示行号</li></ul></li><li><p><strong>跳到指定行</strong></p><ul><li>跳到首行：在命令模式下，按下gg</li><li>跳到最后一行：在命令模式下，按下shift+g</li><li>跳到指定行：在命令模式下，按下n+shift+g,n就是指定的行号</li></ul></li></ul><blockquote><p>持续更新ing～</p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 工具使用 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>

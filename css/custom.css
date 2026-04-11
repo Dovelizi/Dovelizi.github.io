@@ -1,0 +1,21 @@
+/* 自定义样式 */
+
+/* Footer 背景色 - 亮暗主题自适应 */
+[data-theme="dark"] #footer {
+  background: #1d1f26 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+[data-theme="dark"] #footer .footer-copyright,
+[data-theme="dark"] #footer .footer_custom_text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] #footer {
+  background: #f2f3f5 !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] #footer .footer-copyright,
+[data-theme="light"] #footer .footer_custom_text,
+[data-theme="light"] #footer .copyright {
+  color: #555 !important;
+}
