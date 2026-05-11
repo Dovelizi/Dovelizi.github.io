@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>CoinFlow：让记账只剩一句话、一张图</title>
+      <link href="/2026/05/12/CoinFlow-iOS-Architecture/"/>
+      <url>/2026/05/12/CoinFlow-iOS-Architecture/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>一句话，一张图，一笔账。</p><p>这是 CoinFlow 的核心理念，也是我做这个 App 的初衷：<strong>把记账的摩擦降到最低</strong>。</p><p>GitHub: <a href="https://github.com/Dovelizi/CoinFlow">https://github.com/Dovelizi/CoinFlow</a></p></blockquote><hr><h2 id="为什么再做一个记账-App"><a href="#为什么再做一个记账-App" class="headerlink" title="为什么再做一个记账 App"></a>为什么再做一个记账 App</h2><p>记账类 App 我用过不下五款。每次都用不过两周，原因其实只有一个：<strong>录入门槛太高</strong>。打开 App、找分类、敲金额、选日期……一笔账三十秒，谁顶得住？</p><p>更别说大部分 App 把你的数据锁在自己的服务器里，想看个长期统计还得开会员。</p><p>所以我想做的事很简单：</p><ol><li><strong>录入要快</strong>：截个图、说一句话就能记</li><li><strong>数据归我</strong>：本地加密 + 云端同步到我自己的飞书多维表格</li><li><strong>解析要准</strong>：LLM + 规则引擎双保险，最差也能识别金额和分类</li></ol><p><img src="/img/posts/coinflow/01-home-empty.png" alt="CoinFlow 主页"></p><hr><h2 id="三种记账方式"><a href="#三种记账方式" class="headerlink" title="三种记账方式"></a>三种记账方式</h2><h3 id="1-截图记账：丢张支付截图进来就行"><a href="#1-截图记账：丢张支付截图进来就行" class="headerlink" title="1. 截图记账：丢张支付截图进来就行"></a>1. 截图记账：丢张支付截图进来就行</h3><p>支付宝、微信、抖音、银行 App 的支付成功页，截下来直接发给 CoinFlow。它会自动识别金额、商户、时间、分类。</p><p>实现思路是三档路由：先用 iOS 自带的 Vision 本地识别，confidence 不够再走视觉 LLM，再不行就让用户手填。这样断网、API 挂了都能用。</p><p><img src="/img/posts/coinflow/02-capture-recognizing.png" alt="截图识别中"></p><p><img src="/img/posts/coinflow/03-capture-recognized.png" alt="截图识别完成"></p><p>还做了一个挺好用的功能：<strong>Back Tap × 2 唤起</strong>。在 iOS 设置里把”敲击背面两次”绑到 CoinFlow 的 Shortcuts，然后截完图敲两下手机背面，App 就会自动接住最新截图开始识别。比手动打开 App 快多了。</p><h3 id="2-语音记账：一句话识别多笔"><a href="#2-语音记账：一句话识别多笔" class="headerlink" title="2. 语音记账：一句话识别多笔"></a>2. 语音记账：一句话识别多笔</h3><p>按住底部按钮说话，松手识别。重点是支持<strong>一句话多笔</strong>：</p><blockquote><p>“今天中午吃了 14 块的拉面，下午买咖啡 22，晚上打车 35”</p></blockquote><p>LLM 会自动把它拆成 3 笔账单，然后用一个向导让你逐笔确认。中间随时能跳回去改任意一笔。</p><p><img src="/img/posts/coinflow/04-voice-recording.png" alt="语音录音中"></p><p><img src="/img/posts/coinflow/05-voice-wizard.png" alt="语音逐笔确认"></p><p>ASR 用的是苹果的 SFSpeech，强制 onDevice 模式——录音完全不上传，识别也在本地。</p><h3 id="3-手动记账：还是要的"><a href="#3-手动记账：还是要的" class="headerlink" title="3. 手动记账：还是要的"></a>3. 手动记账：还是要的</h3><p>不是所有场景都适合截图或语音。给孩子的零花钱、私下转账，还得手输。一个 Modal 搞定，金额、分类、备注、日期。</p><hr><h2 id="让我自豪的功能：LLM-账单总结"><a href="#让我自豪的功能：LLM-账单总结" class="headerlink" title="让我自豪的功能：LLM 账单总结"></a>让我自豪的功能：LLM 账单总结</h2><p>这是我自己最喜欢的功能。</p><p>每周一、每月 1 号、每年 1 月 1 日打开 App，会自动生成上一周期的账单总结。<strong>不是冷冰冰的数据，而是带情绪的复盘</strong>。</p><p>提示词调了好久，让 LLM 在保留数据准确性的前提下，写得像朋友吐槽。比如这周报里有这么一句：</p><blockquote><p>这周的你像一位精准控分的极简主义者，三笔消费干净利落，连支出都透着一种”非必要不花钱”的倔强。</p></blockquote><p><img src="/img/posts/coinflow/06-summary-entry.png" alt="账单总结入口"></p><p><img src="/img/posts/coinflow/07-summary-card.png" alt="账单总结浮窗"></p><p>每篇总结生成后还会自动同步一份到飞书的「CoinFlow 账单总结」表，永久归档。一年后回头看自己的财务情绪轨迹，挺有意思。</p><hr><h2 id="数据归你：飞书多维表格作为云端"><a href="#数据归你：飞书多维表格作为云端" class="headerlink" title="数据归你：飞书多维表格作为云端"></a>数据归你：飞书多维表格作为云端</h2><p><img src="/img/posts/coinflow/08-sync-status.png" alt="同步状态"></p><p>为什么不用 iCloud &#x2F; Firebase &#x2F; 自建后端？</p><table><thead><tr><th>候选</th><th>我的看法</th></tr></thead><tbody><tr><td>iCloud</td><td>没有结构化查询，没法直接做报表</td></tr><tr><td>Firebase</td><td>计费门槛 + 国内网络抽风 + 数据所有权依然在 Google</td></tr><tr><td>自建后端</td><td>个人 App 运营不起</td></tr><tr><td><strong>飞书多维表格</strong></td><td>✅ 用户自带账号、免费、原生表格视图，<strong>关键是数据 100% 在用户自己手里</strong></td></tr></tbody></table><p>每次记完一笔账，App 会自动把数据上传到你飞书”我的空间”里的一张多维表格。你随时能在飞书侧自己写公式、做透视、生成图表。卸载 App 数据也还在。</p><p>技术上，所有飞书 HTTP 调用经一个 actor 串行化，token 自动刷新、错误指数退避、批量删除分页、附件素材库归档全做了。失败重试上限 5 次，超过就标记”已死”等用户手动复活。</p><hr><h2 id="统计：把数据看得见"><a href="#统计：把数据看得见" class="headerlink" title="统计：把数据看得见"></a>统计：把数据看得见</h2><p><img src="/img/posts/coinflow/09-stats-overview.png" alt="本月统计概览"></p><p><img src="/img/posts/coinflow/10-stats-sankey.png" alt="资金流向 Sankey"></p><p><img src="/img/posts/coinflow/11-stats-wordcloud.png" alt="分类词云"></p><p>资金流向用的是 Sankey 图，工资进来 → 支出去向一图看清。分类词云字号映射占比，点击下钻到详情。</p><hr><h2 id="一些细节"><a href="#一些细节" class="headerlink" title="一些细节"></a>一些细节</h2><p><img src="/img/posts/coinflow/12-record-detail.png" alt="流水详情"></p><p><img src="/img/posts/coinflow/13-settings.png" alt="设置页"></p><ul><li><strong>Face ID 启动锁</strong>：冷启动要求生物认证，账单数据不让别人随手翻</li><li><strong>应用切换器隐私模糊</strong>：切到后台时整个界面被模糊，防止录屏 &#x2F; 截图</li><li><strong>金额染色策略</strong>：自动 &#x2F; 收入绿 &#x2F; 支出红 &#x2F; 全 mono 四种主题</li><li><strong>14 个预设分类 + 100+ SF Symbols 图标库</strong>：自定义分类时图标按 group 浏览</li><li><strong>流水列表三视图</strong>：List &#x2F; 扑克叠 &#x2F; Grid 切换</li></ul><hr><h2 id="技术栈一览（给同行看的）"><a href="#技术栈一览（给同行看的）" class="headerlink" title="技术栈一览（给同行看的）"></a>技术栈一览（给同行看的）</h2><ul><li><strong>平台</strong>：iOS 17+ &#x2F; SwiftUI 100%</li><li><strong>架构</strong>：分层 + MVVM + Repository + Actor 隔离</li><li><strong>本地存储</strong>：SQLCipher 4（256-bit AES 透明加密），密钥存 Keychain</li><li><strong>OCR</strong>：Vision 本地 + 视觉 LLM（OpenAI 兼容协议）</li><li><strong>ASR</strong>：SFSpeechRecognizer 强制 onDevice</li><li><strong>LLM Provider</strong>：ModelScope（魔搭，免费额度大）&#x2F; DeepSeek（中文最快），运行时切换</li><li><strong>依赖</strong>：只有 SQLCipher.swift 和 swift-markdown-ui 两个第三方库，HTTP 走 URLSession，状态走 Combine</li></ul><p>几个坚持下来的工程原则：</p><ul><li><strong>金额永远用 <code>Decimal</code></strong>，全栈禁用 Double 中转</li><li><strong>SQL 100% 参数化</strong>，动态列名也走白名单</li><li><strong>同步元操作不污染 <code>updated_at</code></strong>：保证待同步队列的 FIFO 真实序</li><li><strong>三档可降级</strong>：OCR &#x2F; ASR &#x2F; LLM 主路径失败都有兜底，断网照样能用</li></ul><hr><h2 id="现在的状态"><a href="#现在的状态" class="headerlink" title="现在的状态"></a>现在的状态</h2><p><img src="/img/posts/coinflow/14-home-with-data.png" alt="首页有数据态"></p><p>Phase 1（M1–M9 基础功能）+ M10（LLM 账单总结）+ M11（视觉打磨 + App 图标）已经做完，目前在真机上自用打磨。</p><p>下一步想做的：</p><ul><li>真”自动消费最新截图”（现在还要手动选）</li><li>多账本、AA 账本（数据库字段已经预留）</li><li>二级分类</li><li>把统计页的 Charts 和 Sankey 做更深</li></ul><hr><h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>这是一个有点偏执的项目：</p><ul><li><strong>依赖少到极致</strong>——能用系统 API 就不引第三方</li><li><strong>数据归用户</strong>——云端选飞书是因为它能让用户在自己的账号里完整看到所有原始数据</li><li><strong>录入门槛降到最低</strong>——三种入口、三档路由，最差也能用</li></ul><p>如果你也对 iOS 端”重数据 + 重同步”的产品感兴趣，欢迎到 <a href="https://github.com/Dovelizi/CoinFlow">GitHub 仓库</a> 一起讨论。完整的技术架构文档也在仓库里，6 万多字，所有时序图、状态机、字段映射都有。</p><hr><blockquote><p>完整源码：<a href="https://github.com/Dovelizi/CoinFlow">https://github.com/Dovelizi/CoinFlow</a><br>完整技术架构文档：仓库里的 <a href="https://github.com/Dovelizi/CoinFlow/blob/main/CoinFlow%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%96%87%E6%A1%A3.md"><code>CoinFlow技术架构文档.md</code></a></p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 移动开发 </category>
+          
+          <category> iOS 项目 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> iOS </tag>
+            
+            <tag> SwiftUI </tag>
+            
+            <tag> LLM </tag>
+            
+            <tag> 飞书多维表格 </tag>
+            
+            <tag> 个人项目 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MCP 终极指南——从协议原理到 Agent 实现全解析</title>
       <link href="/2026/04/22/MCP-Ultimate-Guide/"/>
       <url>/2026/04/22/MCP-Ultimate-Guide/</url>
@@ -104,13 +139,13 @@
             
             <tag> Agent </tag>
             
-            <tag> Harness Engineering </tag>
-            
-            <tag> Context Engineering </tag>
-            
             <tag> MCP </tag>
             
             <tag> 开发工具 </tag>
+            
+            <tag> Harness Engineering </tag>
+            
+            <tag> Context Engineering </tag>
             
         </tags>
       
@@ -176,11 +211,11 @@
             
             <tag> Agent </tag>
             
+            <tag> Claude Code </tag>
+            
             <tag> MCP </tag>
             
             <tag> 开发工具 </tag>
-            
-            <tag> Claude Code </tag>
             
             <tag> Skill </tag>
             
@@ -376,9 +411,9 @@
       
         <tags>
             
-            <tag> 工具使用 </tag>
-            
             <tag> Git </tag>
+            
+            <tag> 工具使用 </tag>
             
             <tag> 团队协作 </tag>
             
@@ -409,11 +444,11 @@
       
         <tags>
             
+            <tag> 工具使用 </tag>
+            
             <tag> Vim </tag>
             
             <tag> Linux </tag>
-            
-            <tag> 工具使用 </tag>
             
             <tag> 效率 </tag>
             
@@ -427,22 +462,22 @@
     
     
     <entry>
-      <title>lizi 的小窝～</title>
-      <link href="/about/index.html"/>
-      <url>/about/index.html</url>
+      <title>友链</title>
+      <link href="/links/index.html"/>
+      <url>/links/index.html</url>
       
-        <content type="html"><![CDATA[<h2 id="Hey，我是-Lizi-👋"><a href="#Hey，我是-Lizi-👋" class="headerlink" title="Hey，我是 Lizi 👋"></a>Hey，我是 Lizi 👋</h2><p>一个热爱技术的后端工程师，目前在 <strong>腾讯云智·出行服务</strong> 担任后端开发工程师，坐标武汉。</p><p>日常和 Java、AI Agent、高并发系统打交道，业余时间喜欢折腾各种新技术，写写博客记录踩坑心得。</p><blockquote><p>永远相信美好的事情即将发生～</p></blockquote><hr><h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><ul><li>5 年+ Java 后端开发经验，先后就职于卡方科技、哈啰出行、腾讯云智</li><li>从 C 端顺风车到 B 端数据平台，兼具用户体验与数据平台双重视角</li><li>擅长 AI + 大数据场景下的全链路系统设计与闭环交付</li><li>主导&#x2F;深度参与 <strong>20+</strong> 个核心专项，覆盖 AI Agent、高并发、数据治理等领域</li></ul><hr><h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><h3 id="AI-大模型"><a href="#AI-大模型" class="headerlink" title="AI &amp; 大模型"></a>AI &amp; 大模型</h3><ul><li>了解 LLM 基本原理，主导 <strong>CosyVoice TTS</strong> 大模型工程化落地（MOS 4.2+&#x2F;5.0，日均 100万+ 通外呼）</li><li>熟悉 Prompt Engineering：CoT &#x2F; Few-Shot &#x2F; Prompt Chaining</li><li>熟练掌握 Agent 设计模式：ReAct &#x2F; Tool Use &#x2F; Router &#x2F; Reflection</li><li>熟悉 <strong>MCP 协议</strong>与 <strong>RAG 架构</strong>，主导顺风车 MCP 化方案落地</li><li>能使用 <strong>Dify、N8N</strong> 等平台构建 AI 工作流与智能体应用</li></ul><h3 id="Java-后端"><a href="#Java-后端" class="headerlink" title="Java 后端"></a>Java 后端</h3><ul><li>扎实的 Java 基础（IO、多线程、集合框架），深入理解反射机制与 JVM 原理</li><li>具备高并发系统优化经验（日均百万级订单&#x2F;外呼）</li><li>熟练使用 <strong>Spring</strong>（阅读过源码）&#x2F; <strong>MyBatis-Plus</strong></li><li>熟悉 <strong>RocketMQ</strong>、<strong>Kafka</strong> 消息中间件</li><li>掌握 MySQL 分库分表与 SQL 调优，熟练使用 Guava、Hutool 工具库</li></ul><h3 id="数据与存储"><a href="#数据与存储" class="headerlink" title="数据与存储"></a>数据与存储</h3><ul><li>熟悉 <strong>MySQL</strong>、<strong>Redis</strong>、<strong>Elasticsearch</strong></li><li>掌握 ES-DB 数据同步方案设计（一致性 99.9%+，延迟秒级）</li><li>具备日均百万级数据管道的全链路治理经验</li></ul><h3 id="DevOps-工程素养"><a href="#DevOps-工程素养" class="headerlink" title="DevOps &amp; 工程素养"></a>DevOps &amp; 工程素养</h3><ul><li>熟悉 <strong>Docker</strong> &#x2F; Docker-Compose 容器化部署与镜像编排</li><li>了解 Nginx，熟悉 Linux 基础运维（Arthas 线上诊断）</li><li>熟练使用 Git &#x2F; Gitflow 团队协同开发</li><li>熟悉 <strong>DDD 领域驱动设计</strong>与常用设计模式</li><li>具备良好的代码风格与模块化设计能力，能编写完整单元测试（Mockito）</li></ul><hr><h2 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h2><h3 id="🏢-腾讯云智·出行服务（2025-05-至今）"><a href="#🏢-腾讯云智·出行服务（2025-05-至今）" class="headerlink" title="🏢 腾讯云智·出行服务（2025.05 - 至今）"></a>🏢 腾讯云智·出行服务（2025.05 - 至今）</h3><p><strong>高级后端开发工程师</strong> · 出行服务 · 武汉</p><p>主导&#x2F;深度参与 <strong>8 个核心专项</strong>，具备 AI Agent 工程化落地、多服务商聚合架构设计、数据驱动 AB 实验及全链路监控体系搭建能力。</p><p><strong>顺风车 MCP 化 · Agent 出行探索</strong></p><ul><li>主导顺风车核心出行能力的 AI Agent 化改造，作为需求负责人设计并落地全链路 MCP 化方案</li><li>将询价、下单等 <strong>6 项核心流程</strong>封装为标准化 MCP 接口，支撑微信、手图等多入口对话式交互</li><li>搭建 BFF 聚合服务层，并行编排逆地址解析、POI 消歧等 <strong>8 项核心能力</strong></li><li>设计 Redis 缓存透传机制，Agent 侧下单流程简化为 <strong>1 个 ID 操作</strong></li></ul><p><strong>卡单能力建设</strong></p><ul><li>独立设计订单状态一致性保障方案（分段延迟消息 + 里程动态延迟 + 主动轮询双通道）</li><li>适配 <strong>4 家异构服务商</strong>，稳定支撑日均 <strong>30 万+</strong> 发单</li><li>订单一致性从 80% 提升至 <strong>95%+</strong>，客诉趋近于零</li></ul><p><strong>短信及触达优化</strong></p><ul><li>独立设计免订阅推送 + 用户行为动态决策双策略</li><li>全量上线后短信成本降低 <strong>57.5%</strong>（月省 ¥15-20 万），下单量反升 <strong>1.8%</strong></li></ul><p><strong>跨城巴士</strong></p><ul><li>独立接手项目，接入流水班和大巴车，覆盖 <strong>3 家服务商</strong></li><li>日下单峰值从 81 增至 254 单（<strong>+213%</strong>），DAU 增长 <strong>103%</strong>，完单增长 <strong>268%</strong></li><li>搭建全链路监控 + 告警降噪 + 拨测体系，告警噪音减少 <strong>80%</strong></li></ul><p><strong>其他专项</strong></p><ul><li>无登录态安全分享方案（256 位 Token + Redis 三重防护），上线零安全事故</li><li>支付分感知方案（AB 实验 + 虚拟号智能播报）降低客诉</li><li>从 0 到 1 搭建 AI 客诉聚合分类工作流（基于 N8N 编排），实现客诉工单自动采集与语义分类</li></ul><hr><h3 id="🏢-哈啰出行（2023-10-2025-04）"><a href="#🏢-哈啰出行（2023-10-2025-04）" class="headerlink" title="🏢 哈啰出行（2023.10 - 2025.04）"></a>🏢 哈啰出行（2023.10 - 2025.04）</h3><p><strong>Java 高级后端开发工程师</strong> · 普惠事业部 · 上海</p><p>2 年内主导&#x2F;深度参与 <strong>12 个核心需求</strong>，涵盖 C 端顺风车（履约、风控、营销）及 B 端 AI 外呼平台（大模型语音、数据链路）。</p><p><strong>顺风车核心链路</strong></p><ul><li>主导司机履约流程优化，重构订单状态机 + RocketMQ 异步解耦，处理效率提升 <strong>30%</strong></li><li>稳定支撑日均 <strong>百万级</strong>订单流转，高峰期零积压</li><li>设计风控策略对接模块，风控命中率提升至 <strong>95%+</strong>，违规接单率降低 <strong>40%</strong></li><li>统筹顺风车与打车订单流转逻辑，资源匹配效率提升 <strong>20%</strong></li></ul><p><strong>营销与风控体系</strong></p><ul><li>开发选券组件，优惠券核销准确率达 <strong>99.8%+</strong>，支撑月均百万级发放</li><li>主导域内鉴权工具从 0 到 1 设计，覆盖全域 <strong>50+</strong> 核心接口，非法访问拦截率 <strong>99.9%</strong></li><li>设计高客诉自动封禁系统，人工审核工作量降低 <strong>70%</strong>，处置时效从 24h 缩短至实时</li></ul><p><strong>AI 语音能力建设</strong></p><ul><li>落地 <strong>CosyVoice 大模型</strong> TTS 语音生成服务集成方案</li><li>语音自然度评分（MOS）达 <strong>4.2+&#x2F;5.0</strong>，支撑日均 <strong>100 万+</strong> 通外呼</li><li>外呼接通后用户平均通话时长提升约 <strong>15%</strong></li></ul><p><strong>数据链路优化</strong></p><ul><li>重构外呼数据采集管道，统计准确率从 92% 提升至 <strong>99.5%+</strong></li><li>实时看板延迟从 T+1 缩短至<strong>准实时（分钟级）</strong></li><li>优化 ES-DB 数据同步，一致性从 95% 提升至 <strong>99.9%+</strong>，延迟从分钟级降至<strong>秒级</strong></li></ul><hr><h3 id="🏢-上海卡方信息科技（2021-04-2023-08）"><a href="#🏢-上海卡方信息科技（2021-04-2023-08）" class="headerlink" title="🏢 上海卡方信息科技（2021.04 - 2023.08）"></a>🏢 上海卡方信息科技（2021.04 - 2023.08）</h3><p><strong>Java 后端开发工程师</strong> · 上海</p><p>2 年间深度参与 <strong>4 个核心项目</strong>，积累了 Linux 运维、第三方平台集成、容器化部署、TB 级大数据处理及 DDD 领域驱动设计等实战经验。</p><p><strong>数据平台 X-Data</strong></p><ul><li>主导心财富模块从 0 到 1 开发，日活用户提升约 <strong>30%</strong></li><li>牵头制定代码规范与 Review 流程，代码缺陷率降低 <strong>25%</strong></li><li>搭建每日数据自动校验与推送体系，日均 <strong>10 万+</strong> 条数据自动化处理</li><li>独立开发飞书企业应用集成，日均推送 <strong>500+</strong> 条实时信号</li></ul><p><strong>算法评价平台</strong></p><ul><li>搭建股票行情全链路采集管道，日均处理 <strong>50 万+</strong> 条行情数据</li><li>开发回测数据全流程处理模块，脏数据率从 5% 降至 <strong>0.5%</strong> 以下</li><li>独立设计自动化部署平台，部署效率提升 <strong>83%</strong>（30 分钟 → 5 分钟）</li><li>覆盖 <strong>20+</strong> 台服务器运维管理，年度节省运维人力约 <strong>400+</strong> 人时</li></ul><hr><h2 id="在校经历"><a href="#在校经历" class="headerlink" title="在校经历"></a>在校经历</h2><p><strong>湖北商贸学院</strong> · 计算机科学与技术 · 本科（2017 - 2021）· 武汉</p><ul><li>🏆 蓝桥杯（算法竞赛）湖北省省赛 <strong>一等奖</strong></li><li>🏆 微信小程序应用开发赛 华中赛区 <strong>一等奖</strong> &amp; 全国 <strong>三等奖</strong></li></ul><hr><h2 id="关键数据一览"><a href="#关键数据一览" class="headerlink" title="关键数据一览"></a>关键数据一览</h2><table><thead><tr><th>维度</th><th>数据</th></tr></thead><tbody><tr><td>工作年限</td><td>5 年+</td></tr><tr><td>主导&#x2F;参与核心专项</td><td>20+ 个</td></tr><tr><td>日均订单支撑</td><td>百万级（哈啰）&#x2F; 30 万+（腾讯）</td></tr><tr><td>日均外呼支撑</td><td>100 万+ 通</td></tr><tr><td>数据一致性</td><td>99.9%+</td></tr><tr><td>业务增长最高</td><td>+268%（跨城巴士完单）</td></tr><tr><td>成本节省</td><td>¥15-20 万&#x2F;月（短信优化）</td></tr></tbody></table><hr><h2 id="关于我-1"><a href="#关于我-1" class="headerlink" title="关于我"></a>关于我</h2><ul><li><strong>GitHub</strong>：<a href="https://github.com/Dovelizi">Dovelizi</a></li><li><strong>LeetCode</strong>：<a href="https://leetcode.cn/u/lizi-lemo-i/">lizi-lemo-i</a></li><li><strong>Blog</strong>：<a href="https://dovelizi.github.io/">dovelizi.github.io</a></li><li><strong>邮箱</strong>：<a href="mailto:&#100;&#x6f;&#x76;&#101;&#x6c;&#105;&#122;&#105;&#x40;&#102;&#111;&#120;&#109;&#97;&#105;&#108;&#x2e;&#99;&#111;&#x6d;">dovelizi@foxmail.com</a></li></ul>]]></content>
+        <content type="html"><![CDATA[]]></content>
       
     </entry>
     
     
     
     <entry>
-      <title></title>
-      <link href="/css/custom.css"/>
-      <url>/css/custom.css</url>
+      <title>lizi 的小窝～</title>
+      <link href="/about/index.html"/>
+      <url>/about/index.html</url>
       
-        <content type="html"><![CDATA[/* 自定义样式 *//* Footer 背景色 - 亮暗主题自适应 */[data-theme="dark"] #footer {  background: #1d1f26 !important;  border-top: 1px solid rgba(255, 255, 255, 0.05);}[data-theme="dark"] #footer .footer-copyright,[data-theme="dark"] #footer .footer_custom_text {  color: rgba(255, 255, 255, 0.6);}[data-theme="light"] #footer {  background: #f2f3f5 !important;  border-top: 1px solid rgba(0, 0, 0, 0.08);}[data-theme="light"] #footer .footer-copyright,[data-theme="light"] #footer .footer_custom_text,[data-theme="light"] #footer .copyright {  color: #555 !important;}]]></content>
+        <content type="html"><![CDATA[<h2 id="Hey，我是-Lizi-👋"><a href="#Hey，我是-Lizi-👋" class="headerlink" title="Hey，我是 Lizi 👋"></a>Hey，我是 Lizi 👋</h2><p>一个热爱技术的后端工程师，目前在 <strong>腾讯云智·出行服务</strong> 担任后端开发工程师，坐标武汉。</p><p>日常和 Java、AI Agent、高并发系统打交道，业余时间喜欢折腾各种新技术，写写博客记录踩坑心得。</p><blockquote><p>永远相信美好的事情即将发生～</p></blockquote><hr><h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><ul><li>5 年+ Java 后端开发经验，先后就职于卡方科技、哈啰出行、腾讯云智</li><li>从 C 端顺风车到 B 端数据平台，兼具用户体验与数据平台双重视角</li><li>擅长 AI + 大数据场景下的全链路系统设计与闭环交付</li><li>主导&#x2F;深度参与 <strong>20+</strong> 个核心专项，覆盖 AI Agent、高并发、数据治理等领域</li></ul><hr><h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><h3 id="AI-大模型"><a href="#AI-大模型" class="headerlink" title="AI &amp; 大模型"></a>AI &amp; 大模型</h3><ul><li>了解 LLM 基本原理，主导 <strong>CosyVoice TTS</strong> 大模型工程化落地（MOS 4.2+&#x2F;5.0，日均 100万+ 通外呼）</li><li>熟悉 Prompt Engineering：CoT &#x2F; Few-Shot &#x2F; Prompt Chaining</li><li>熟练掌握 Agent 设计模式：ReAct &#x2F; Tool Use &#x2F; Router &#x2F; Reflection</li><li>熟悉 <strong>MCP 协议</strong>与 <strong>RAG 架构</strong>，主导顺风车 MCP 化方案落地</li><li>能使用 <strong>Dify、N8N</strong> 等平台构建 AI 工作流与智能体应用</li></ul><h3 id="Java-后端"><a href="#Java-后端" class="headerlink" title="Java 后端"></a>Java 后端</h3><ul><li>扎实的 Java 基础（IO、多线程、集合框架），深入理解反射机制与 JVM 原理</li><li>具备高并发系统优化经验（日均百万级订单&#x2F;外呼）</li><li>熟练使用 <strong>Spring</strong>（阅读过源码）&#x2F; <strong>MyBatis-Plus</strong></li><li>熟悉 <strong>RocketMQ</strong>、<strong>Kafka</strong> 消息中间件</li><li>掌握 MySQL 分库分表与 SQL 调优，熟练使用 Guava、Hutool 工具库</li></ul><h3 id="数据与存储"><a href="#数据与存储" class="headerlink" title="数据与存储"></a>数据与存储</h3><ul><li>熟悉 <strong>MySQL</strong>、<strong>Redis</strong>、<strong>Elasticsearch</strong></li><li>掌握 ES-DB 数据同步方案设计（一致性 99.9%+，延迟秒级）</li><li>具备日均百万级数据管道的全链路治理经验</li></ul><h3 id="DevOps-工程素养"><a href="#DevOps-工程素养" class="headerlink" title="DevOps &amp; 工程素养"></a>DevOps &amp; 工程素养</h3><ul><li>熟悉 <strong>Docker</strong> &#x2F; Docker-Compose 容器化部署与镜像编排</li><li>了解 Nginx，熟悉 Linux 基础运维（Arthas 线上诊断）</li><li>熟练使用 Git &#x2F; Gitflow 团队协同开发</li><li>熟悉 <strong>DDD 领域驱动设计</strong>与常用设计模式</li><li>具备良好的代码风格与模块化设计能力，能编写完整单元测试（Mockito）</li></ul><hr><h2 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h2><h3 id="🏢-腾讯云智·出行服务（2025-05-至今）"><a href="#🏢-腾讯云智·出行服务（2025-05-至今）" class="headerlink" title="🏢 腾讯云智·出行服务（2025.05 - 至今）"></a>🏢 腾讯云智·出行服务（2025.05 - 至今）</h3><p><strong>高级后端开发工程师</strong> · 出行服务 · 武汉</p><p>主导&#x2F;深度参与 <strong>8 个核心专项</strong>，具备 AI Agent 工程化落地、多服务商聚合架构设计、数据驱动 AB 实验及全链路监控体系搭建能力。</p><p><strong>顺风车 MCP 化 · Agent 出行探索</strong></p><ul><li>主导顺风车核心出行能力的 AI Agent 化改造，作为需求负责人设计并落地全链路 MCP 化方案</li><li>将询价、下单等 <strong>6 项核心流程</strong>封装为标准化 MCP 接口，支撑微信、手图等多入口对话式交互</li><li>搭建 BFF 聚合服务层，并行编排逆地址解析、POI 消歧等 <strong>8 项核心能力</strong></li><li>设计 Redis 缓存透传机制，Agent 侧下单流程简化为 <strong>1 个 ID 操作</strong></li></ul><p><strong>卡单能力建设</strong></p><ul><li>独立设计订单状态一致性保障方案（分段延迟消息 + 里程动态延迟 + 主动轮询双通道）</li><li>适配 <strong>4 家异构服务商</strong>，稳定支撑日均 <strong>30 万+</strong> 发单</li><li>订单一致性从 80% 提升至 <strong>95%+</strong>，客诉趋近于零</li></ul><p><strong>短信及触达优化</strong></p><ul><li>独立设计免订阅推送 + 用户行为动态决策双策略</li><li>全量上线后短信成本降低 <strong>57.5%</strong>（月省 ¥15-20 万），下单量反升 <strong>1.8%</strong></li></ul><p><strong>跨城巴士</strong></p><ul><li>独立接手项目，接入流水班和大巴车，覆盖 <strong>3 家服务商</strong></li><li>日下单峰值从 81 增至 254 单（<strong>+213%</strong>），DAU 增长 <strong>103%</strong>，完单增长 <strong>268%</strong></li><li>搭建全链路监控 + 告警降噪 + 拨测体系，告警噪音减少 <strong>80%</strong></li></ul><p><strong>其他专项</strong></p><ul><li>无登录态安全分享方案（256 位 Token + Redis 三重防护），上线零安全事故</li><li>支付分感知方案（AB 实验 + 虚拟号智能播报）降低客诉</li><li>从 0 到 1 搭建 AI 客诉聚合分类工作流（基于 N8N 编排），实现客诉工单自动采集与语义分类</li></ul><hr><h3 id="🏢-哈啰出行（2023-10-2025-04）"><a href="#🏢-哈啰出行（2023-10-2025-04）" class="headerlink" title="🏢 哈啰出行（2023.10 - 2025.04）"></a>🏢 哈啰出行（2023.10 - 2025.04）</h3><p><strong>Java 高级后端开发工程师</strong> · 普惠事业部 · 上海</p><p>2 年内主导&#x2F;深度参与 <strong>12 个核心需求</strong>，涵盖 C 端顺风车（履约、风控、营销）及 B 端 AI 外呼平台（大模型语音、数据链路）。</p><p><strong>顺风车核心链路</strong></p><ul><li>主导司机履约流程优化，重构订单状态机 + RocketMQ 异步解耦，处理效率提升 <strong>30%</strong></li><li>稳定支撑日均 <strong>百万级</strong>订单流转，高峰期零积压</li><li>设计风控策略对接模块，风控命中率提升至 <strong>95%+</strong>，违规接单率降低 <strong>40%</strong></li><li>统筹顺风车与打车订单流转逻辑，资源匹配效率提升 <strong>20%</strong></li></ul><p><strong>营销与风控体系</strong></p><ul><li>开发选券组件，优惠券核销准确率达 <strong>99.8%+</strong>，支撑月均百万级发放</li><li>主导域内鉴权工具从 0 到 1 设计，覆盖全域 <strong>50+</strong> 核心接口，非法访问拦截率 <strong>99.9%</strong></li><li>设计高客诉自动封禁系统，人工审核工作量降低 <strong>70%</strong>，处置时效从 24h 缩短至实时</li></ul><p><strong>AI 语音能力建设</strong></p><ul><li>落地 <strong>CosyVoice 大模型</strong> TTS 语音生成服务集成方案</li><li>语音自然度评分（MOS）达 <strong>4.2+&#x2F;5.0</strong>，支撑日均 <strong>100 万+</strong> 通外呼</li><li>外呼接通后用户平均通话时长提升约 <strong>15%</strong></li></ul><p><strong>数据链路优化</strong></p><ul><li>重构外呼数据采集管道，统计准确率从 92% 提升至 <strong>99.5%+</strong></li><li>实时看板延迟从 T+1 缩短至<strong>准实时（分钟级）</strong></li><li>优化 ES-DB 数据同步，一致性从 95% 提升至 <strong>99.9%+</strong>，延迟从分钟级降至<strong>秒级</strong></li></ul><hr><h3 id="🏢-上海卡方信息科技（2021-04-2023-08）"><a href="#🏢-上海卡方信息科技（2021-04-2023-08）" class="headerlink" title="🏢 上海卡方信息科技（2021.04 - 2023.08）"></a>🏢 上海卡方信息科技（2021.04 - 2023.08）</h3><p><strong>Java 后端开发工程师</strong> · 上海</p><p>2 年间深度参与 <strong>4 个核心项目</strong>，积累了 Linux 运维、第三方平台集成、容器化部署、TB 级大数据处理及 DDD 领域驱动设计等实战经验。</p><p><strong>数据平台 X-Data</strong></p><ul><li>主导心财富模块从 0 到 1 开发，日活用户提升约 <strong>30%</strong></li><li>牵头制定代码规范与 Review 流程，代码缺陷率降低 <strong>25%</strong></li><li>搭建每日数据自动校验与推送体系，日均 <strong>10 万+</strong> 条数据自动化处理</li><li>独立开发飞书企业应用集成，日均推送 <strong>500+</strong> 条实时信号</li></ul><p><strong>算法评价平台</strong></p><ul><li>搭建股票行情全链路采集管道，日均处理 <strong>50 万+</strong> 条行情数据</li><li>开发回测数据全流程处理模块，脏数据率从 5% 降至 <strong>0.5%</strong> 以下</li><li>独立设计自动化部署平台，部署效率提升 <strong>83%</strong>（30 分钟 → 5 分钟）</li><li>覆盖 <strong>20+</strong> 台服务器运维管理，年度节省运维人力约 <strong>400+</strong> 人时</li></ul><hr><h2 id="在校经历"><a href="#在校经历" class="headerlink" title="在校经历"></a>在校经历</h2><p><strong>湖北商贸学院</strong> · 计算机科学与技术 · 本科（2017 - 2021）· 武汉</p><ul><li>🏆 蓝桥杯（算法竞赛）湖北省省赛 <strong>一等奖</strong></li><li>🏆 微信小程序应用开发赛 华中赛区 <strong>一等奖</strong> &amp; 全国 <strong>三等奖</strong></li></ul><hr><h2 id="关键数据一览"><a href="#关键数据一览" class="headerlink" title="关键数据一览"></a>关键数据一览</h2><table><thead><tr><th>维度</th><th>数据</th></tr></thead><tbody><tr><td>工作年限</td><td>5 年+</td></tr><tr><td>主导&#x2F;参与核心专项</td><td>20+ 个</td></tr><tr><td>日均订单支撑</td><td>百万级（哈啰）&#x2F; 30 万+（腾讯）</td></tr><tr><td>日均外呼支撑</td><td>100 万+ 通</td></tr><tr><td>数据一致性</td><td>99.9%+</td></tr><tr><td>业务增长最高</td><td>+268%（跨城巴士完单）</td></tr><tr><td>成本节省</td><td>¥15-20 万&#x2F;月（短信优化）</td></tr></tbody></table><hr><h2 id="关于我-1"><a href="#关于我-1" class="headerlink" title="关于我"></a>关于我</h2><ul><li><strong>GitHub</strong>：<a href="https://github.com/Dovelizi">Dovelizi</a></li><li><strong>LeetCode</strong>：<a href="https://leetcode.cn/u/lizi-lemo-i/">lizi-lemo-i</a></li><li><strong>Blog</strong>：<a href="https://dovelizi.github.io/">dovelizi.github.io</a></li><li><strong>邮箱</strong>：<a href="mailto:&#x64;&#111;&#118;&#x65;&#108;&#x69;&#122;&#105;&#64;&#102;&#x6f;&#120;&#x6d;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#109;">dovelizi@foxmail.com</a></li></ul>]]></content>
       
     </entry>
     
@@ -460,11 +495,11 @@
     
     
     <entry>
-      <title>友链</title>
-      <link href="/links/index.html"/>
-      <url>/links/index.html</url>
+      <title></title>
+      <link href="/css/custom.css"/>
+      <url>/css/custom.css</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[/* 自定义样式 *//* Footer 背景色 - 亮暗主题自适应 */[data-theme="dark"] #footer {  background: #1d1f26 !important;  border-top: 1px solid rgba(255, 255, 255, 0.05);}[data-theme="dark"] #footer .footer-copyright,[data-theme="dark"] #footer .footer_custom_text {  color: rgba(255, 255, 255, 0.6);}[data-theme="light"] #footer {  background: #f2f3f5 !important;  border-top: 1px solid rgba(0, 0, 0, 0.08);}[data-theme="light"] #footer .footer-copyright,[data-theme="light"] #footer .footer_custom_text,[data-theme="light"] #footer .copyright {  color: #555 !important;}]]></content>
       
     </entry>
     
